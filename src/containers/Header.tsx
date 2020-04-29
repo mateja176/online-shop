@@ -63,7 +63,20 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     alignItems: 'center',
   },
+  form: {
+    display: 'flex',
+  },
 }));
+
+const initialAnimationState: Keyframe = {
+  transform: 'scale(1)',
+};
+
+const keyframes: Keyframe[] = [
+  initialAnimationState,
+  { transform: 'scale(1.2)' },
+  initialAnimationState,
+];
 
 export const Header: React.FC<HeaderProps> = ({ title }) => {
   const [numberOfItems, setNumberOfItems] = React.useState(0);
@@ -73,9 +86,14 @@ export const Header: React.FC<HeaderProps> = ({ title }) => {
     setNumberOfItems(Number(value));
   };
 
+  const countBadgeRef = React.useRef<HTMLDivElement | null>(null);
+
   const [itemCount, setCount] = React.useState(0);
-  const handleSetCount = () => {
+  const handleSubmit: React.FormEventHandler = (e) => {
+    e.preventDefault();
     setCount(numberOfItems);
+
+    countBadgeRef.current?.animate(keyframes, { duration: 400 });
   };
 
   const [yOffset, setYOffset] = React.useState(0);
@@ -102,30 +120,32 @@ export const Header: React.FC<HeaderProps> = ({ title }) => {
           {title}
         </Typography>
       </Box>
-      <Box mr={5} display="flex">
-        <Box mr={4}>
-          <FormLabel className={classes.formLabel}>
-            <TextField
-              type="number"
-              variant="outlined"
-              size="small"
-              value={numberOfItems}
-              onChange={handleChange}
-              inputProps={{
-                className: classes.countInput,
-              }}
-            />
-            <Typography className={classes.label}>PCE</Typography>
-          </FormLabel>
-        </Box>
-        <Button
-          startIcon={<AddShoppingCart />}
-          color="secondary"
-          variant="contained"
-          onClick={handleSetCount}
-        >
-          Add to cart
-        </Button>
+      <Box mr={5}>
+        <form onSubmit={handleSubmit} className={classes.form}>
+          <Box mr={4}>
+            <FormLabel className={classes.formLabel}>
+              <TextField
+                type="number"
+                variant="outlined"
+                size="small"
+                value={numberOfItems}
+                onChange={handleChange}
+                inputProps={{
+                  className: classes.countInput,
+                }}
+              />
+              <Typography className={classes.label}>PCE</Typography>
+            </FormLabel>
+          </Box>
+          <Button
+            type="submit"
+            startIcon={<AddShoppingCart />}
+            color="secondary"
+            variant="contained"
+          >
+            Add to cart
+          </Button>
+        </form>
       </Box>
       <IconButton className={classes.iconButton}>
         <FavoriteBorder />
@@ -134,7 +154,11 @@ export const Header: React.FC<HeaderProps> = ({ title }) => {
         <InsertDriveFile />
       </IconButton>
       <IconButton className={clsx(classes.iconButton, classes.cartButton)}>
-        <Badge badgeContent={itemCount} color="secondary">
+        <Badge
+          ref={countBadgeRef}
+          badgeContent={itemCount}
+          color="secondary"
+        >
           <ShoppingCart />
         </Badge>
       </IconButton>
