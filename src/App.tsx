@@ -1,10 +1,11 @@
+import { item } from 'item';
 import React from 'react';
 import { hot } from 'react-hot-loader';
 
 function App() {
   return (
     <div className="App">
-      Online shop
+      <pre>{item}</pre>
     </div>
   );
 }
