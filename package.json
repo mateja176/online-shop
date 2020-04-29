@@ -39,6 +39,7 @@
     ]
   },
   "devDependencies": {
-    "babel-plugin-preval": "^5.0.0"
+    "babel-plugin-preval": "^5.0.0",
+    "react-hot-loader": "^4.12.20"
   }
 }
