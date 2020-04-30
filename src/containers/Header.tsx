@@ -17,7 +17,9 @@ import {
 } from '@material-ui/icons';
 import clsx from 'clsx';
 import { useItem } from 'hooks';
+import { addToCardSectionId } from 'models/components';
 import React from 'react';
+import { createPortal } from 'react-dom';
 
 export interface HeaderProps {}
 
@@ -53,6 +55,7 @@ const useStyles = makeStyles(() => ({
   },
   countInput: {
     textAlign: 'right',
+    width: 35,
   },
   label: {
     marginLeft: 10,
@@ -129,6 +132,44 @@ export const Header: React.FC<HeaderProps> = () => {
     (target as HTMLInputElement).select();
   };
 
+  const addToCardSectionRef = React.useRef<Element | null>(null);
+
+  React.useEffect(() => {
+    const section = document.getElementById(addToCardSectionId);
+    console.log(section);
+    addToCardSectionRef.current = section;
+  }, []);
+
+  const addToCartForm = (
+    <form onSubmit={handleSubmit} className={classes.form}>
+      <Box mr={4}>
+        <FormLabel className={classes.formLabel}>
+          <TextField
+            type="number"
+            variant="outlined"
+            size="small"
+            value={numberOfItems}
+            onChange={handleChange}
+            inputProps={{
+              className: classes.countInput,
+            }}
+            onClick={handleFormClick}
+          />
+          <Typography className={classes.label}>PCE</Typography>
+        </FormLabel>
+      </Box>
+      <Button
+        type="submit"
+        startIcon={<AddShoppingCart />}
+        color="secondary"
+        variant="contained"
+        disabled={numberOfItems === 0}
+      >
+        Add to cart
+      </Button>
+    </form>
+  );
+
   return (
     <AppBar position="fixed" color="transparent" className={classes.header}>
       <Box flex={1} ml={4}>
@@ -136,35 +177,9 @@ export const Header: React.FC<HeaderProps> = () => {
           {item?.article.title}
         </Typography>
       </Box>
-      <Box mr={5}>
-        <form onSubmit={handleSubmit} className={classes.form}>
-          <Box mr={4}>
-            <FormLabel className={classes.formLabel}>
-              <TextField
-                type="number"
-                variant="outlined"
-                size="small"
-                value={numberOfItems}
-                onChange={handleChange}
-                inputProps={{
-                  className: classes.countInput,
-                }}
-                onClick={handleFormClick}
-              />
-              <Typography className={classes.label}>PCE</Typography>
-            </FormLabel>
-          </Box>
-          <Button
-            type="submit"
-            startIcon={<AddShoppingCart />}
-            color="secondary"
-            variant="contained"
-            disabled={numberOfItems === 0}
-          >
-            Add to cart
-          </Button>
-        </form>
-      </Box>
+      <Box mr={5}>{addToCartForm}</Box>
+      {addToCardSectionRef.current &&
+        createPortal(addToCartForm, addToCardSectionRef.current)}
       <IconButton className={classes.iconButton}>
         <FavoriteBorder />
       </IconButton>
