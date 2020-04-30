@@ -16,11 +16,10 @@ import {
   ShoppingCart,
 } from '@material-ui/icons';
 import clsx from 'clsx';
+import { useItem } from 'hooks';
 import React from 'react';
 
-export interface HeaderProps {
-  title: string;
-}
+export interface HeaderProps {}
 
 export interface HeaderStyleProps {
   hasYOffset: boolean;
@@ -78,7 +77,9 @@ const keyframes: Keyframe[] = [
   initialAnimationState,
 ];
 
-export const Header: React.FC<HeaderProps> = ({ title }) => {
+export const Header: React.FC<HeaderProps> = () => {
+  const item = useItem();
+
   const [numberOfItems, setNumberOfItems] = React.useState(0);
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target: { value },
@@ -91,10 +92,18 @@ export const Header: React.FC<HeaderProps> = ({ title }) => {
   const [itemCount, setCount] = React.useState(0);
   const handleSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
-    setCount(numberOfItems);
+    if (numberOfItems !== 0) {
+      setNumberOfItems(0);
 
-    countBadgeRef.current?.animate(keyframes, { duration: 400 });
+      setCount(numberOfItems);
+
+      countBadgeRef.current?.animate(keyframes, { duration: 400 });
+    }
   };
+
+  React.useEffect(() => {
+    setCount((count) => item?.cart.items || count);
+  }, [item]);
 
   const [yOffset, setYOffset] = React.useState(0);
 
@@ -113,11 +122,18 @@ export const Header: React.FC<HeaderProps> = ({ title }) => {
 
   const classes = useStyles({ hasYOffset: yOffset > 0 });
 
+  const handleFormClick: React.MouseEventHandler<HTMLInputElement> = ({
+    target,
+  }) => {
+    // * using currentTarget is type safe however causes a runtime error
+    (target as HTMLInputElement).select();
+  };
+
   return (
     <AppBar position="fixed" color="transparent" className={classes.header}>
       <Box flex={1} ml={4}>
-        <Typography variant="h6" className={classes.ellipsis}>
-          {title}
+        <Typography variant="h5" color="secondary" className={classes.ellipsis}>
+          {item?.article.title}
         </Typography>
       </Box>
       <Box mr={5}>
@@ -133,6 +149,7 @@ export const Header: React.FC<HeaderProps> = ({ title }) => {
                 inputProps={{
                   className: classes.countInput,
                 }}
+                onClick={handleFormClick}
               />
               <Typography className={classes.label}>PCE</Typography>
             </FormLabel>
@@ -142,6 +159,7 @@ export const Header: React.FC<HeaderProps> = ({ title }) => {
             startIcon={<AddShoppingCart />}
             color="secondary"
             variant="contained"
+            disabled={numberOfItems === 0}
           >
             Add to cart
           </Button>
@@ -154,11 +172,7 @@ export const Header: React.FC<HeaderProps> = ({ title }) => {
         <InsertDriveFile />
       </IconButton>
       <IconButton className={clsx(classes.iconButton, classes.cartButton)}>
-        <Badge
-          ref={countBadgeRef}
-          badgeContent={itemCount}
-          color="secondary"
-        >
+        <Badge ref={countBadgeRef} badgeContent={itemCount} color="secondary">
           <ShoppingCart />
         </Badge>
       </IconButton>
