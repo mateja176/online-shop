@@ -1,5 +1,5 @@
 import { Box } from '@material-ui/core';
-import { Header, Overview } from 'containers';
+import { Description, Header, Overview } from 'containers';
 import React from 'react';
 import { hot } from 'react-hot-loader';
 
@@ -8,6 +8,7 @@ function App() {
     <Box>
       <Header />
       <Overview />
+      <Description />
     </Box>
   );
 }

@@ -40,6 +40,7 @@ const useStyles = makeStyles(() => ({
     boxShadow: hasYOffset
       ? `0px 3px 6px ${shadowColor}`
       : `0px 1px 0px ${shadowColor}`,
+    background: 'white',
   }),
   iconButton: {
     width: headerHeight,
@@ -171,7 +172,7 @@ export const Header: React.FC<HeaderProps> = () => {
   );
 
   return (
-    <AppBar position="fixed" color="transparent" className={classes.header}>
+    <AppBar position="fixed" className={classes.header}>
       <Box flex={1} ml={4}>
         <Typography variant="h5" color="secondary" className={classes.ellipsis}>
           {item?.article.title}

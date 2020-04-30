@@ -4,6 +4,7 @@ import { Rating } from '@material-ui/lab';
 import { useItem } from 'hooks';
 import { addToCardSectionId } from 'models/components';
 import React from 'react';
+import { formatCurrency } from 'utils';
 
 export interface OverviewProps {}
 
@@ -11,14 +12,9 @@ const shadowColor = '#eee';
 
 const boxShadow: React.CSSProperties['boxShadow'] = `1px 1px ${shadowColor}, -1px -1px ${shadowColor}`;
 
-const formatCurrency = (currency: string) => (price?: number) =>
-  `${new Intl.NumberFormat('de-DE', {
-    minimumFractionDigits: 2,
-  }).format(price ?? 0)} ${currency}`;
-
 const imagePreviewStyle: React.CSSProperties = {
   cursor: 'pointer',
-} 
+};
 
 export const Overview: React.FC<OverviewProps> = () => {
   const item = useItem();
@@ -30,7 +26,7 @@ export const Overview: React.FC<OverviewProps> = () => {
   const formatEUR = formatCurrency(item?.article.currency ?? '');
 
   return (
-    <Box mt="150px" display="flex">
+    <Box mt="150px" mb={10} display="flex">
       <Box display="grid" gridGap={21} mr="21px" ml={5}>
         {item?.article.images.map((src) => (
           <Box
