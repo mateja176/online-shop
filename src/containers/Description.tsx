@@ -46,6 +46,7 @@ const keywordStyle: React.CSSProperties = {
 
 const cardStyle: React.CSSProperties = {
   width: 800,
+  height: '100%',
 };
 
 const priceBreakTableStyle: React.CSSProperties = {
@@ -53,18 +54,24 @@ const priceBreakTableStyle: React.CSSProperties = {
   marginTop: 5,
 };
 
+const cardContentStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+};
+
 export const Description: React.FC<DescriptionProps> = () => {
   const item = useItem();
 
   return (
     <Box bgcolor="#eee" py={8}>
-      <Box width={cardWidth * 2 + 40} ml={5} mb={6}>
+      <Box maxWidth={cardWidth * 2 + 40} ml={5} mb={6}>
         <Typography variant="h6" color="secondary" style={headerStyle}>
           Description
         </Typography>
         <Typography>{item?.article.description_long}</Typography>
       </Box>
-      <Box display="flex">
+      <Box display="flex" alignItems="stretch">
         <Box ml={5}>
           <Card style={cardStyle}>
             <CardContent>
@@ -120,61 +127,68 @@ export const Description: React.FC<DescriptionProps> = () => {
         </Box>
         <Box ml={5}>
           <Card style={cardStyle}>
-            <CardContent>
+            <CardContent style={cardContentStyle}>
               <Box m={2}>
                 <Typography color="secondary" style={headerStyle}>
                   Pricing & shipping
                 </Typography>
               </Box>
               <Divider />
-              <Box mt={3}>
-                <List>
-                  <ListItem>
-                    <Typography style={bulletStyle}>•</Typography>
-                    <Typography color="textSecondary">
-                      Minimum order:
-                    </Typography>
-                    &nbsp;
-                    {item?.article.minimum_order_quantity}
-                  </ListItem>
-                  <ListItem>
-                    <Typography style={bulletStyle}>•</Typography>
-                    <Typography color="textSecondary">Shipping:</Typography>
-                    &nbsp;
-                    {item?.article.currency &&
-                      formatCurrency(item?.article.currency)(
-                        item?.article.transport_costs,
+              <Box
+                flex={1}
+                display="flex"
+                justifyContent="space-between"
+                flexDirection="column"
+              >
+                <Box mt={3}>
+                  <List>
+                    <ListItem>
+                      <Typography style={bulletStyle}>•</Typography>
+                      <Typography color="textSecondary">
+                        Minimum order:
+                      </Typography>
+                      &nbsp;
+                      {item?.article.minimum_order_quantity}
+                    </ListItem>
+                    <ListItem>
+                      <Typography style={bulletStyle}>•</Typography>
+                      <Typography color="textSecondary">Shipping:</Typography>
+                      &nbsp;
+                      {item?.article.currency &&
+                        formatCurrency(item?.article.currency)(
+                          item?.article.transport_costs,
+                        )}
+                    </ListItem>
+                    <ListItem>
+                      <Typography style={bulletStyle}>•</Typography>
+                      <Typography color="textSecondary">Delivery:</Typography>
+                      &nbsp;
+                      {item?.article.delivery_time}
+                    </ListItem>
+                  </List>
+                </Box>
+                <Box mt={3}>
+                  <Typography variant="h6" color="textSecondary">
+                    Price breaks
+                  </Typography>
+                  <Table style={priceBreakTableStyle}>
+                    {item?.article.price_breaks &&
+                      Object.entries(item?.article.price_breaks).map(
+                        ([pieces, price], i) => (
+                          <TableRow
+                            style={{
+                              borderTop: i === 0 ? '1px solid #eee' : 'none',
+                            }}
+                          >
+                            <TableCell align="right">ex {pieces} PCE</TableCell>
+                            <TableCell>
+                              {formatCurrency(item.article.currency)(price)}/PCE
+                            </TableCell>
+                          </TableRow>
+                        ),
                       )}
-                  </ListItem>
-                  <ListItem>
-                    <Typography style={bulletStyle}>•</Typography>
-                    <Typography color="textSecondary">Delivery:</Typography>
-                    &nbsp;
-                    {item?.article.delivery_time}
-                  </ListItem>
-                </List>
-              </Box>
-              <Box mt={3}>
-                <Typography variant="h6" color="textSecondary">
-                  Price breaks
-                </Typography>
-                <Table style={priceBreakTableStyle}>
-                  {item?.article.price_breaks &&
-                    Object.entries(item?.article.price_breaks).map(
-                      ([pieces, price], i) => (
-                        <TableRow
-                          style={{
-                            borderTop: i === 0 ? '1px solid #eee' : 'none',
-                          }}
-                        >
-                          <TableCell align="right">ex {pieces} PCE</TableCell>
-                          <TableCell>
-                            {formatCurrency(item.article.currency)(price)}/PCE
-                          </TableCell>
-                        </TableRow>
-                      ),
-                    )}
-                </Table>
+                  </Table>
+                </Box>
               </Box>
             </CardContent>
           </Card>

@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 @font-face {
   font-family: SourceSansPro;
   src: local(SourceSansPro-Regular),
