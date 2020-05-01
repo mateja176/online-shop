@@ -7,9 +7,9 @@ import {
   IconButton,
   makeStyles,
   TextField,
+  Theme,
   Typography,
   useMediaQuery,
-  Theme,
 } from '@material-ui/core';
 import {
   AddShoppingCart,
@@ -140,7 +140,6 @@ export const Header: React.FC<HeaderProps> = () => {
 
   React.useEffect(() => {
     const section = document.getElementById(addToCardSectionId);
-    console.log(section);
     addToCardSectionRef.current = section;
   }, []);
 
