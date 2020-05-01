@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   Table,
+  TableBody,
   TableCell,
   TableRow,
   Typography,
@@ -50,9 +51,10 @@ const cardStyle: React.CSSProperties = {
   height: '100%',
 };
 
-const priceBreakTableStyle: React.CSSProperties = {
+const priceBreakTableBodyStyle: React.CSSProperties = {
   display: 'inline-block',
   marginTop: 5,
+  borderTop: '1px solid #eee',
 };
 
 const cardContentStyle: React.CSSProperties = {
@@ -178,23 +180,23 @@ export const Description: React.FC<DescriptionProps> = () => {
                   <Typography variant="h6" color="textSecondary">
                     Price breaks
                   </Typography>
-                  <Table style={priceBreakTableStyle}>
-                    {item?.article.price_breaks &&
-                      Object.entries(item?.article.price_breaks).map(
-                        ([pieces, price], i) => (
-                          <TableRow
-                            key={price}
-                            style={{
-                              borderTop: i === 0 ? '1px solid #eee' : 'none',
-                            }}
-                          >
-                            <TableCell align="right">ex {pieces} PCE</TableCell>
-                            <TableCell>
-                              {formatCurrency(item.article.currency)(price)}/PCE
-                            </TableCell>
-                          </TableRow>
-                        ),
-                      )}
+                  <Table>
+                    <TableBody style={priceBreakTableBodyStyle}>
+                      {item?.article.price_breaks &&
+                        Object.entries(item?.article.price_breaks).map(
+                          ([pieces, price]) => (
+                            <TableRow key={price}>
+                              <TableCell align="right">
+                                ex {pieces} PCE
+                              </TableCell>
+                              <TableCell>
+                                {formatCurrency(item.article.currency)(price)}
+                                /PCE
+                              </TableCell>
+                            </TableRow>
+                          ),
+                        )}
+                    </TableBody>
                   </Table>
                 </Box>
               </Box>
