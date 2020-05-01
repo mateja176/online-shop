@@ -8,6 +8,8 @@ import {
   makeStyles,
   TextField,
   Typography,
+  useMediaQuery,
+  Theme,
 } from '@material-ui/core';
 import {
   AddShoppingCart,
@@ -53,6 +55,7 @@ const useStyles = makeStyles(() => ({
   ellipsis: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
   countInput: {
     textAlign: 'right',
@@ -141,6 +144,10 @@ export const Header: React.FC<HeaderProps> = () => {
     addToCardSectionRef.current = section;
   }, []);
 
+  const isMediumOrHigher = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.up('md'),
+  );
+
   const addToCartForm = (
     <form onSubmit={handleSubmit} className={classes.form}>
       <Box mr={4}>
@@ -173,12 +180,19 @@ export const Header: React.FC<HeaderProps> = () => {
 
   return (
     <AppBar position="fixed" className={classes.header}>
-      <Box flex={1} ml={4}>
-        <Typography variant="h5" color="secondary" className={classes.ellipsis}>
-          {item?.article.title}
-        </Typography>
-      </Box>
-      <Box mr={5}>{addToCartForm}</Box>
+      {isMediumOrHigher && (
+        <Box flex={1} ml={4} minWidth="34%">
+          <Typography
+            variant="h5"
+            color="secondary"
+            className={classes.ellipsis}
+            title={item?.article.title}
+          >
+            {item?.article.title}
+          </Typography>
+        </Box>
+      )}
+      <Box ml="auto" mr={4}>{addToCartForm}</Box>
       {addToCardSectionRef.current &&
         createPortal(addToCartForm, addToCardSectionRef.current)}
       <IconButton className={classes.iconButton}>
