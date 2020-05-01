@@ -1,4 +1,11 @@
-import { Box, IconButton, Link, Typography } from '@material-ui/core';
+import {
+  Box,
+  IconButton,
+  Link,
+  Theme,
+  Typography,
+  useMediaQuery,
+} from '@material-ui/core';
 import { ArrowDropDown, LocalOffer, ZoomIn } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { useItem } from 'hooks';
@@ -32,10 +39,21 @@ export const Overview: React.FC<OverviewProps> = () => {
 
   const formatEUR = formatCurrency(item?.article.currency ?? '');
 
+  const isSmallOrLower = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('sm'),
+  );
+
   return (
     <Box mt="70px" mb={margin} display="flex" flexWrap="wrap">
       <Box mt={margin} display="flex" flexWrap="wrap">
-        <Box display="grid" gridGap={21} mr="21px" ml={5}>
+        <Box
+          display="grid"
+          gridGap={21}
+          mr="21px"
+          ml={5}
+          gridAutoFlow={isSmallOrLower ? 'column' : 'row'}
+          mt={isSmallOrLower ? 3 : 0}
+        >
           {item?.article.images.map((src) => (
             <Box
               key={src}
@@ -62,6 +80,8 @@ export const Overview: React.FC<OverviewProps> = () => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          order={isSmallOrLower ? -1 : 0}
+          ml={isSmallOrLower ? 5 : 0}
         >
           {selectedImage ? (
             <img src={selectedImage} alt="Article" />

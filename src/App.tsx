@@ -1,15 +1,16 @@
-import { Box } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import { Description, Header, Overview } from 'containers';
 import React from 'react';
 import { hot } from 'react-hot-loader';
 
 function App() {
+  const theme = createMuiTheme();
   return (
-    <Box>
+    <ThemeProvider theme={theme}>
       <Header />
       <Overview />
       <Description />
-    </Box>
+    </ThemeProvider>
   );
 }
 
