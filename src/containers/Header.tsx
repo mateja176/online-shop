@@ -148,6 +148,25 @@ export const Header: React.FC<HeaderProps> = () => {
     theme.breakpoints.up('md'),
   );
 
+  const [isIntersectingHeader, setIsIntersectingHeader] = React.useState(false);
+
+  React.useEffect(() => {
+    const eventType: keyof WindowEventMap = 'scroll';
+    const handleScroll = () => {
+      if (addToCardSectionRef.current) {
+        const { top } = addToCardSectionRef.current.getBoundingClientRect();
+        const isIntersecting = top < 70;
+        setIsIntersectingHeader(isIntersecting);
+      }
+    };
+
+    window.addEventListener(eventType, handleScroll);
+
+    return () => {
+      window.removeEventListener(eventType, handleScroll);
+    };
+  }, []);
+
   const addToCartForm = (
     <form onSubmit={handleSubmit} className={classes.form}>
       <Box mr={4}>
@@ -192,8 +211,11 @@ export const Header: React.FC<HeaderProps> = () => {
           </Typography>
         </Box>
       )}
-      <Box ml="auto" mr={4}>{addToCartForm}</Box>
+      <Box ml="auto" mr={4}>
+        {isIntersectingHeader && addToCartForm}
+      </Box>
       {addToCardSectionRef.current &&
+        !isIntersectingHeader &&
         createPortal(addToCartForm, addToCardSectionRef.current)}
       <IconButton className={classes.iconButton}>
         <FavoriteBorder />
