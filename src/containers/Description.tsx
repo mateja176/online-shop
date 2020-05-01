@@ -26,6 +26,8 @@ const headerStyle: React.CSSProperties = {
 
 const cardWidth = 800;
 
+const descriptionWidth = cardWidth * 2 + 40;
+
 const bulletStyle: React.CSSProperties = {
   transform: 'scale(2)',
   marginRight: 15,
@@ -45,7 +47,6 @@ const keywordStyle: React.CSSProperties = {
 };
 
 const cardStyle: React.CSSProperties = {
-  width: 800,
   height: '100%',
 };
 
@@ -65,14 +66,20 @@ export const Description: React.FC<DescriptionProps> = () => {
 
   return (
     <Box bgcolor="#eee" py={8}>
-      <Box maxWidth={cardWidth * 2 + 40} ml={5} mb={6}>
+      <Box maxWidth={descriptionWidth} ml={5}>
         <Typography variant="h6" color="secondary" style={headerStyle}>
           Description
         </Typography>
         <Typography>{item?.article.description_long}</Typography>
       </Box>
-      <Box display="flex" alignItems="stretch">
-        <Box ml={5}>
+      <Box
+        display="flex"
+        alignItems="stretch"
+        maxWidth={descriptionWidth}
+        flexWrap="wrap"
+        mx={3}
+      >
+        <Box flexGrow={1} mt={4} mx={2}>
           <Card style={cardStyle}>
             <CardContent>
               <Box m={2}>
@@ -125,7 +132,7 @@ export const Description: React.FC<DescriptionProps> = () => {
             </CardContent>
           </Card>
         </Box>
-        <Box ml={5}>
+        <Box flexGrow={1} mt={4} mx={2}>
           <Card style={cardStyle}>
             <CardContent style={cardContentStyle}>
               <Box m={2}>
