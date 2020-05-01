@@ -96,7 +96,7 @@ export const Description: React.FC<DescriptionProps> = () => {
                   {item?.article.features &&
                     Object.entries(item?.article.features).map(
                       ([name, feature]) => (
-                        <ListItem>
+                        <ListItem key={name}>
                           <Typography style={bulletStyle}>•</Typography>
                           <Typography color="textSecondary">
                             {name}
@@ -112,7 +112,7 @@ export const Description: React.FC<DescriptionProps> = () => {
                 </Typography>
                 <List>
                   {item?.article.attachments.map(({ file_label }) => (
-                    <ListItem>
+                    <ListItem key={file_label}>
                       <Attachment style={attachmentIconsStyle} />
                       <Link color="primary">{file_label}</Link>
                     </ListItem>
@@ -125,7 +125,7 @@ export const Description: React.FC<DescriptionProps> = () => {
                 </Typography>
                 <Box display="flex" pt={1}>
                   {item?.article.keywords.map((keyword) => (
-                    <Chip label={keyword} style={keywordStyle} />
+                    <Chip key={keyword} label={keyword} style={keywordStyle} />
                   ))}
                 </Box>
               </Box>
@@ -183,6 +183,7 @@ export const Description: React.FC<DescriptionProps> = () => {
                       Object.entries(item?.article.price_breaks).map(
                         ([pieces, price], i) => (
                           <TableRow
+                            key={price}
                             style={{
                               borderTop: i === 0 ? '1px solid #eee' : 'none',
                             }}
