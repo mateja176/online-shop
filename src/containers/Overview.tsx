@@ -21,15 +21,18 @@ const margin = 8;
 export const Overview: React.FC<OverviewProps> = () => {
   const item = useItem();
 
-  const [selectedImage, setSelectedImage] = React.useState(
-    item?.article.images?.[0],
-  );
+  const [selectedImage, setSelectedImage] = React.useState('');
+  React.useEffect(() => {
+    if (!selectedImage && item?.article.images.length) {
+      setSelectedImage(item.article.images[0]);
+    }
+  }, [selectedImage, item]);
 
   const formatEUR = formatCurrency(item?.article.currency ?? '');
 
   return (
     <Box mt="70px" mb={margin} display="flex" flexWrap="wrap">
-      <Box mt={margin} display="flex" >
+      <Box mt={margin} display="flex">
         <Box display="grid" gridGap={21} mr="21px" ml={5}>
           {item?.article.images.map((src) => (
             <Box
