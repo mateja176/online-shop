@@ -18,6 +18,8 @@ const imagePreviewStyle: React.CSSProperties = {
 
 const margin = 8;
 
+const thumbnailSize = 186;
+
 export const Overview: React.FC<OverviewProps> = () => {
   const item = useItem();
 
@@ -32,13 +34,13 @@ export const Overview: React.FC<OverviewProps> = () => {
 
   return (
     <Box mt="70px" mb={margin} display="flex" flexWrap="wrap">
-      <Box mt={margin} display="flex">
+      <Box mt={margin} display="flex" flexWrap="wrap">
         <Box display="grid" gridGap={21} mr="21px" ml={5}>
           {item?.article.images.map((src) => (
             <Box
               key={src}
-              width={186}
-              height={186}
+              width={thumbnailSize}
+              height={thumbnailSize}
               boxShadow={boxShadow}
               display="flex"
               alignItems="center"
