@@ -66,20 +66,20 @@ export const Description: React.FC<DescriptionProps> = () => {
 
   return (
     <Box bgcolor="#eee" py={8}>
-      <Box maxWidth={descriptionWidth} ml={5}>
+      <Box maxWidth={descriptionWidth} mx={5}>
         <Typography variant="h6" color="secondary" style={headerStyle}>
           Description
         </Typography>
         <Typography>{item?.article.description_long}</Typography>
       </Box>
       <Box
-        display="flex"
-        alignItems="stretch"
+        mx={5}
+        display="grid"
         maxWidth={descriptionWidth}
-        flexWrap="wrap"
-        mx={3}
+        gridTemplateColumns="repeat(auto-fit, minmax(300px, auto))"
+        gridGap={40}
       >
-        <Box flexGrow={1} mt={4} mx={2}>
+        <Box mt={5}>
           <Card style={cardStyle}>
             <CardContent>
               <Box m={2}>
@@ -132,7 +132,7 @@ export const Description: React.FC<DescriptionProps> = () => {
             </CardContent>
           </Card>
         </Box>
-        <Box flexGrow={1} mt={4} mx={2}>
+        <Box mt={5}>
           <Card style={cardStyle}>
             <CardContent style={cardContentStyle}>
               <Box m={2}>
