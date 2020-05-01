@@ -16,6 +16,8 @@ const imagePreviewStyle: React.CSSProperties = {
   cursor: 'pointer',
 };
 
+const margin = 8;
+
 export const Overview: React.FC<OverviewProps> = () => {
   const item = useItem();
 
@@ -26,47 +28,49 @@ export const Overview: React.FC<OverviewProps> = () => {
   const formatEUR = formatCurrency(item?.article.currency ?? '');
 
   return (
-    <Box mt="150px" mb={10} display="flex">
-      <Box display="grid" gridGap={21} mr="21px" ml={5}>
-        {item?.article.images.map((src) => (
-          <Box
-            key={src}
-            width={186}
-            height={186}
-            boxShadow={boxShadow}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            onClick={() => {
-              setSelectedImage(src);
-            }}
-            style={imagePreviewStyle}
-          >
-            <img src={src} alt="Article" width={186} height={186} />
+    <Box mt="70px" mb={margin} display="flex" flexWrap="wrap">
+      <Box mt={margin} display="flex" >
+        <Box display="grid" gridGap={21} mr="21px" ml={5}>
+          {item?.article.images.map((src) => (
+            <Box
+              key={src}
+              width={186}
+              height={186}
+              boxShadow={boxShadow}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              onClick={() => {
+                setSelectedImage(src);
+              }}
+              style={imagePreviewStyle}
+            >
+              <img src={src} alt="Article" width={186} height={186} />
+            </Box>
+          ))}
+        </Box>
+        <Box
+          width={600}
+          height={600}
+          boxShadow={boxShadow}
+          position="relative"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          {selectedImage ? (
+            <img src={selectedImage} alt="Article" />
+          ) : (
+            'Select an image from the thumbnails'
+          )}
+          <Box position="absolute" right={3} bottom={3}>
+            <IconButton>
+              <ZoomIn />
+            </IconButton>
           </Box>
-        ))}
-      </Box>
-      <Box
-        width={600}
-        height={600}
-        boxShadow={boxShadow}
-        position="relative"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        {selectedImage ? (
-          <img src={selectedImage} alt="Article" />
-        ) : (
-          'Select an image from the thumbnails'
-        )}
-        <Box position="absolute" right={3} bottom={3}>
-          <IconButton>
-            <ZoomIn />
-          </IconButton>
         </Box>
       </Box>
-      <Box ml={5} display="flex" flexDirection="column">
+      <Box mt={margin} ml={5} display="flex" flexDirection="column">
         <Box mb={4}>
           <Typography variant="h6">{item?.article.title}</Typography>
           <Box display="flex" mb={2}>
@@ -102,7 +106,9 @@ export const Overview: React.FC<OverviewProps> = () => {
           </Typography>
         </Box>
         <Box flex={1} display="flex" alignItems="flex-end">
-          <div id={addToCardSectionId} />
+          <Box mt={7}>
+            <div id={addToCardSectionId} />
+          </Box>
         </Box>
       </Box>
     </Box>
