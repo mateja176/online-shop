@@ -2,22 +2,19 @@ import {
   AppBar,
   Badge,
   Box,
-  Button,
-  FormLabel,
   IconButton,
   makeStyles,
-  TextField,
   Theme,
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
 import {
-  AddShoppingCart,
   FavoriteBorder,
   InsertDriveFile,
   ShoppingCart,
 } from '@material-ui/icons';
 import clsx from 'clsx';
+import { AddToCartForm, AddToCartFormProps } from 'components';
 import { useItem } from 'hooks';
 import { addToCardSectionId } from 'models/components';
 import React from 'react';
@@ -80,8 +77,6 @@ const keyframes: Keyframe[] = [
   { transform: 'scale(1.2)' },
   initialAnimationState,
 ];
-
-const addToCartButtonText = 'Add to cart';
 
 export const Header: React.FC<HeaderProps> = () => {
   const item = useItem();
@@ -181,37 +176,17 @@ export const Header: React.FC<HeaderProps> = () => {
 
   const showTitle = !isExtraSmallOrLower || !isIntersectingHeader;
 
-  const AddToCartForm: React.FC<{ buttonText: string }> = ({ buttonText }) => (
-    <form onSubmit={handleSubmit} className={classes.form}>
-      <Box mr={isSmallOrLower ? 2 : 4}>
-        <FormLabel className={classes.formLabel}>
-          <TextField
-            type="number"
-            variant="outlined"
-            size="small"
-            value={numberOfItems}
-            onChange={handleChange}
-            inputProps={{
-              className: classes.countInput,
-            }}
-            onClick={handleFormClick}
-          />
-          {!isSmallOrLower && (
-            <Typography className={classes.label}>PCE</Typography>
-          )}
-        </FormLabel>
-      </Box>
-      <Button
-        type="submit"
-        startIcon={<AddShoppingCart />}
-        color="secondary"
-        variant="contained"
-        disabled={numberOfItems === 0}
-      >
-        {buttonText}
-      </Button>
-    </form>
-  );
+  const addToCartFormProps: AddToCartFormProps = {
+    isSmallOrLower,
+    numberOfItems,
+    className: classes.form,
+    formLabelClass: classes.formLabel,
+    labelClass: classes.label,
+    inputClass: classes.countInput,
+    handleChange,
+    handleFormClick,
+    handleSubmit,
+  };
 
   return (
     <AppBar position="fixed" className={classes.header}>
@@ -235,11 +210,14 @@ export const Header: React.FC<HeaderProps> = () => {
         mr={isSmallOrLower ? 1 : 4}
         style={getSectionStyle(isIntersectingHeader)}
       >
-        <AddToCartForm buttonText={isSmallOrLower ? '' : addToCartButtonText} />
+        <AddToCartForm
+          {...addToCartFormProps}
+          buttonText={isSmallOrLower ? '' : undefined}
+        />
       </Box>
       {addToCardSectionRef.current &&
         createPortal(
-          <AddToCartForm buttonText={addToCartButtonText} />,
+          <AddToCartForm {...addToCartFormProps} />,
           addToCardSectionRef.current,
         )}
       <IconButton className={classes.iconButton}>
