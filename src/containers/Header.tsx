@@ -186,7 +186,7 @@ export const Header: React.FC<HeaderProps> = () => {
     opacity: isShown ? 1 : 0,
   });
 
-  const showTitle = !isExtraSmallOrLower || !isIntersectingHeader;
+  const showTitle = !isExtraSmallOrLower;
 
   const addToCartFormProps: AddToCartFormProps = {
     isSmallOrLower,
@@ -227,7 +227,7 @@ export const Header: React.FC<HeaderProps> = () => {
       <Box
         ml="auto"
         mr={isSmallOrLower ? 1 : 4}
-        style={getSectionStyle(isIntersectingHeader)}
+        style={getSectionStyle(isIntersectingHeader || isExtraSmallOrLower)}
       >
         <AddToCartForm
           {...addToCartFormProps}
@@ -245,6 +245,7 @@ export const Header: React.FC<HeaderProps> = () => {
         />
       </Box>
       {addToCardSectionRef.current &&
+        !isExtraSmallOrLower &&
         createPortal(
           <AddToCartForm {...addToCartFormProps} />,
           addToCardSectionRef.current,
