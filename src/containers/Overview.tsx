@@ -23,6 +23,8 @@ const imagePreviewStyle: React.CSSProperties = {
   cursor: 'pointer',
 };
 
+const imageSize = 600;
+
 const margin = 8;
 
 const thumbnailSize = 186;
@@ -43,22 +45,17 @@ export const Overview: React.FC<OverviewProps> = () => {
     theme.breakpoints.down('sm'),
   );
 
+  const previewImageSize = isSmallOrLower ? imageSize : thumbnailSize;
+
   return (
     <Box mt="70px" mb={margin} display="flex" flexWrap="wrap">
       <Box mt={margin} display="flex" flexWrap="wrap">
-        <Box
-          display="grid"
-          gridGap={21}
-          mr="21px"
-          ml={5}
-          gridAutoFlow={isSmallOrLower ? 'column' : 'row'}
-          mt={isSmallOrLower ? 3 : 0}
-        >
+        <Box display="grid" gridGap={21} mr="21px" ml={5}>
           {item?.article.images.map((src) => (
             <Box
               key={src}
-              width={thumbnailSize}
-              height={thumbnailSize}
+              width={previewImageSize}
+              height={previewImageSize}
               boxShadow={boxShadow}
               display="flex"
               alignItems="center"
@@ -68,16 +65,21 @@ export const Overview: React.FC<OverviewProps> = () => {
               }}
               style={imagePreviewStyle}
             >
-              <img src={src} alt="Article" width={186} height={186} />
+              <img
+                src={src}
+                alt="Article"
+                width={imageSize}
+                height={imageSize}
+              />
             </Box>
           ))}
         </Box>
         <Box
-          width={600}
-          height={600}
+          width={imageSize}
+          height={imageSize}
           boxShadow={boxShadow}
           position="relative"
-          display="flex"
+          display={isSmallOrLower ? 'none' : 'flex'}
           alignItems="center"
           justifyContent="center"
           order={isSmallOrLower ? -1 : 0}
