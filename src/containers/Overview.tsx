@@ -8,7 +8,7 @@ import {
   useTheme,
   makeStyles,
 } from '@material-ui/core';
-import { ArrowDropDown, LocalOffer, ZoomIn } from '@material-ui/icons';
+import { ArrowDropDown, LocalOffer, ZoomIn, ZoomOut } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { useItem } from 'hooks';
 import { addToCardSectionId } from 'models/components';
@@ -22,6 +22,9 @@ import {
 import { formatCurrency } from 'utils';
 
 export interface OverviewProps {}
+
+const initialImageScale = 1;
+const zoomIncrement = 0.1;
 
 /* value is multiplied to get absolute amount in pixels */
 const margin = 8;
@@ -56,6 +59,21 @@ export const Overview: React.FC<OverviewProps> = () => {
 
   const previewImageSize = isSmallOrLower ? maxImageSize : thumbnailSize;
 
+  const [imageScale, setImageScale] = React.useState(initialImageScale);
+
+  const zoomIn = () => {
+    setImageScale((scale) => scale + zoomIncrement);
+  };
+
+  const zoomOut = () => {
+    setImageScale((scale) => scale - zoomIncrement);
+  };
+
+  const selectedImageStyle: React.CSSProperties = {
+    transform: `scale(${imageScale})`,
+    transformOrigin: 'center center',
+  };
+
   return (
     <Box mt={`${headerHeight}px`} mb={margin} display="flex" flexWrap="wrap">
       <Box mt={margin} display="flex" flexWrap="wrap">
@@ -77,6 +95,7 @@ export const Overview: React.FC<OverviewProps> = () => {
               justifyContent="center"
               onClick={() => {
                 setSelectedImage(src);
+                setImageScale(initialImageScale);
               }}
             >
               <img src={src} alt="Article" width="100%" height="100%" />
@@ -93,14 +112,18 @@ export const Overview: React.FC<OverviewProps> = () => {
           justifyContent="center"
           order={isSmallOrLower ? -1 : 0}
           ml={isSmallOrLower ? 5 : 0}
+          overflow="hidden"
         >
           {selectedImage ? (
-            <img src={selectedImage} alt="Article" />
+            <img src={selectedImage} alt="Article" style={selectedImageStyle} />
           ) : (
             'Select an image from the thumbnails'
           )}
           <Box position="absolute" right={3} bottom={3}>
-            <IconButton>
+            <IconButton onClick={zoomOut}>
+              <ZoomOut />
+            </IconButton>
+            <IconButton onClick={zoomIn}>
               <ZoomIn />
             </IconButton>
           </Box>
