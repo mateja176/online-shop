@@ -154,8 +154,11 @@ export const Header: React.FC<HeaderProps> = () => {
     const eventType: keyof WindowEventMap = 'scroll';
     const handleScroll = () => {
       if (addToCardSectionRef.current) {
-        const { top } = addToCardSectionRef.current.getBoundingClientRect();
-        const isIntersecting = top < 70;
+        const {
+          top,
+          height,
+        } = addToCardSectionRef.current.getBoundingClientRect();
+        const isIntersecting = top < 70 - height;
         setIsIntersectingHeader(isIntersecting);
       }
     };
@@ -226,7 +229,6 @@ export const Header: React.FC<HeaderProps> = () => {
         </Transition>
       </Box>
       {addToCardSectionRef.current &&
-        !isIntersectingHeader &&
         createPortal(addToCartForm, addToCardSectionRef.current)}
       <IconButton className={classes.iconButton}>
         <FavoriteBorder />
