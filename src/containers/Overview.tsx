@@ -54,8 +54,8 @@ export const Overview: React.FC<OverviewProps> = () => {
           {item?.article.images.map((src) => (
             <Box
               key={src}
-              width={previewImageSize}
-              height={previewImageSize}
+              maxWidth={previewImageSize}
+              maxHeight={previewImageSize}
               boxShadow={boxShadow}
               display="flex"
               alignItems="center"
@@ -65,12 +65,7 @@ export const Overview: React.FC<OverviewProps> = () => {
               }}
               style={imagePreviewStyle}
             >
-              <img
-                src={src}
-                alt="Article"
-                width={imageSize}
-                height={imageSize}
-              />
+              <img src={src} alt="Article" width="100%" height="100%" />
             </Box>
           ))}
         </Box>
