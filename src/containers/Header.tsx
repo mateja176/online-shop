@@ -22,6 +22,7 @@ import { useItem } from 'hooks';
 import { addToCardSectionId } from 'models/components';
 import React from 'react';
 import { createPortal } from 'react-dom';
+import { Transition } from 'react-transition-group';
 
 export interface HeaderProps {}
 
@@ -211,7 +212,18 @@ export const Header: React.FC<HeaderProps> = () => {
         </Box>
       )}
       <Box ml="auto" mr={4}>
-        {isIntersectingHeader && addToCartForm}
+        <Transition in={isIntersectingHeader} timeout={300} unmountOnExit>
+          {(state) => (
+            <Box
+              style={{
+                transition: 'opacity 300ms',
+                opacity: state === 'exiting' || state === 'entering' ? 0 : 1,
+              }}
+            >
+              {addToCartForm}
+            </Box>
+          )}
+        </Transition>
       </Box>
       {addToCardSectionRef.current &&
         !isIntersectingHeader &&
