@@ -85,6 +85,8 @@ const keyframes: Keyframe[] = [
   initialAnimationState,
 ];
 
+const addToCartButtonText = 'Add to cart';
+
 export const Header: React.FC<HeaderProps> = () => {
   const item = useItem();
 
@@ -148,6 +150,10 @@ export const Header: React.FC<HeaderProps> = () => {
     theme.breakpoints.up('md'),
   );
 
+  const isSmallOrLower = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('sm'),
+  );
+
   const [isIntersectingHeader, setIsIntersectingHeader] = React.useState(false);
 
   React.useEffect(() => {
@@ -170,9 +176,9 @@ export const Header: React.FC<HeaderProps> = () => {
     };
   }, []);
 
-  const addToCartForm = (
+  const AddToCartForm: React.FC<{ buttonText: string }> = ({ buttonText }) => (
     <form onSubmit={handleSubmit} className={classes.form}>
-      <Box mr={4}>
+      <Box mr={isSmallOrLower ? 2 : 4}>
         <FormLabel className={classes.formLabel}>
           <TextField
             type="number"
@@ -185,7 +191,9 @@ export const Header: React.FC<HeaderProps> = () => {
             }}
             onClick={handleFormClick}
           />
-          <Typography className={classes.label}>PCE</Typography>
+          {!isSmallOrLower && (
+            <Typography className={classes.label}>PCE</Typography>
+          )}
         </FormLabel>
       </Box>
       <Button
@@ -195,7 +203,7 @@ export const Header: React.FC<HeaderProps> = () => {
         variant="contained"
         disabled={numberOfItems === 0}
       >
-        Add to cart
+        {buttonText}
       </Button>
     </form>
   );
@@ -214,7 +222,7 @@ export const Header: React.FC<HeaderProps> = () => {
           </Typography>
         </Box>
       )}
-      <Box ml="auto" mr={4}>
+      <Box ml="auto" mr={isSmallOrLower ? 1 : 4}>
         <Transition in={isIntersectingHeader} timeout={300} unmountOnExit>
           {(state) => (
             <Box
@@ -223,13 +231,18 @@ export const Header: React.FC<HeaderProps> = () => {
                 opacity: state === 'exiting' || state === 'entering' ? 0 : 1,
               }}
             >
-              {addToCartForm}
+              <AddToCartForm
+                buttonText={isSmallOrLower ? '' : addToCartButtonText}
+              />
             </Box>
           )}
         </Transition>
       </Box>
       {addToCardSectionRef.current &&
-        createPortal(addToCartForm, addToCardSectionRef.current)}
+        createPortal(
+          <AddToCartForm buttonText={addToCartButtonText} />,
+          addToCardSectionRef.current,
+        )}
       <IconButton className={classes.iconButton}>
         <FavoriteBorder />
       </IconButton>
