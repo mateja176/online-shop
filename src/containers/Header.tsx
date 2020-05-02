@@ -9,6 +9,7 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import {
+  Favorite,
   FavoriteBorder,
   InsertDriveFile,
   ShoppingCart,
@@ -99,7 +100,7 @@ export const Header: React.FC<HeaderProps> = () => {
     e.preventDefault();
     if (numberOfItems !== 0) {
       setCount((count) => count + numberOfItems);
-      
+
       setNumberOfItems(initialNumberOfItems);
 
       countBadgeRef.current?.animate(keyframes, { duration: 400 });
@@ -192,6 +193,12 @@ export const Header: React.FC<HeaderProps> = () => {
     handleSubmit,
   };
 
+  const [isFavorite, setIsFavorite] = React.useState(false);
+
+  const toggleIsFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
+
   return (
     <AppBar position="fixed" className={classes.header}>
       <Box
@@ -224,8 +231,8 @@ export const Header: React.FC<HeaderProps> = () => {
           <AddToCartForm {...addToCartFormProps} />,
           addToCardSectionRef.current,
         )}
-      <IconButton className={classes.iconButton}>
-        <FavoriteBorder />
+      <IconButton className={classes.iconButton} onClick={toggleIsFavorite}>
+        {isFavorite ? <Favorite color="secondary" /> : <FavoriteBorder />}
       </IconButton>
       <IconButton className={classes.iconButton}>
         <InsertDriveFile />
