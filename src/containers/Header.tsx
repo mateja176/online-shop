@@ -96,7 +96,7 @@ export const Header: React.FC<HeaderProps> = () => {
     if (numberOfItems !== 0) {
       setNumberOfItems(0);
 
-      setCount(numberOfItems);
+      setCount((count) => count + numberOfItems);
 
       countBadgeRef.current?.animate(keyframes, { duration: 400 });
     }
