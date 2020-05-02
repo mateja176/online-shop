@@ -7,6 +7,7 @@ import {
   Theme,
   Typography,
   useMediaQuery,
+  Tooltip,
 } from '@material-ui/core';
 import {
   Favorite,
@@ -23,6 +24,11 @@ import { createPortal } from 'react-dom';
 import { headerHeight } from 'styles';
 
 export interface HeaderProps {}
+
+
+const initialNumberOfItems = 1;
+
+const maxItemCount = 999;
 
 export interface HeaderStyleProps {
   hasYOffset: boolean;
@@ -78,8 +84,6 @@ const keyframes: Keyframe[] = [
   { transform: 'scale(1.2)' },
   initialAnimationState,
 ];
-
-const initialNumberOfItems = 1;
 
 export const Header: React.FC<HeaderProps> = () => {
   const item = useItem();
@@ -201,21 +205,22 @@ export const Header: React.FC<HeaderProps> = () => {
 
   return (
     <AppBar position="fixed" className={classes.header}>
-      <Box
-        flex={1}
-        ml={4}
-        minWidth={showTitle ? '34%' : 0}
-        style={getSectionStyle(showTitle)}
-      >
-        <Typography
-          variant="h5"
-          color="secondary"
-          className={classes.ellipsis}
-          title={item?.article.title}
+      <Tooltip title={item?.article.title || ''}>
+        <Box
+          flex={1}
+          ml={4}
+          minWidth={showTitle ? '34%' : 0}
+          style={getSectionStyle(showTitle)}
         >
-          {item?.article.title}
-        </Typography>
-      </Box>
+          <Typography
+            variant="h5"
+            color="secondary"
+            className={classes.ellipsis}
+          >
+            {item?.article.title}
+          </Typography>
+        </Box>
+      </Tooltip>
       <Box
         ml="auto"
         mr={isSmallOrLower ? 1 : 4}
@@ -237,11 +242,13 @@ export const Header: React.FC<HeaderProps> = () => {
       <IconButton className={classes.iconButton}>
         <InsertDriveFile />
       </IconButton>
-      <IconButton className={clsx(classes.iconButton, classes.cartButton)}>
-        <Badge ref={countBadgeRef} badgeContent={itemCount} color="secondary">
-          <ShoppingCart />
-        </Badge>
-      </IconButton>
+      <Tooltip title={itemCount > maxItemCount ? itemCount.toString() : ''}>
+        <IconButton className={clsx(classes.iconButton, classes.cartButton)}>
+          <Badge ref={countBadgeRef} badgeContent={itemCount} color="secondary" max={maxItemCount}>
+            <ShoppingCart />
+          </Badge>
+        </IconButton>
+      </Tooltip>
     </AppBar>
   );
 };
