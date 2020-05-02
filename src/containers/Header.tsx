@@ -78,10 +78,14 @@ const keyframes: Keyframe[] = [
   initialAnimationState,
 ];
 
+const initialNumberOfItems = 1;
+
 export const Header: React.FC<HeaderProps> = () => {
   const item = useItem();
 
-  const [numberOfItems, setNumberOfItems] = React.useState(0);
+  const [numberOfItems, setNumberOfItems] = React.useState(
+    initialNumberOfItems,
+  );
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target: { value },
   }) => {
@@ -94,9 +98,9 @@ export const Header: React.FC<HeaderProps> = () => {
   const handleSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
     if (numberOfItems !== 0) {
-      setNumberOfItems(0);
-
       setCount((count) => count + numberOfItems);
+      
+      setNumberOfItems(initialNumberOfItems);
 
       countBadgeRef.current?.animate(keyframes, { duration: 400 });
     }
