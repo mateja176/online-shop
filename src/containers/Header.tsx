@@ -22,6 +22,7 @@ import { useItem } from 'hooks';
 import { addToCardSectionId } from 'models/components';
 import React from 'react';
 import { createPortal } from 'react-dom';
+import { headerHeight } from 'styles';
 
 export interface HeaderProps {}
 
@@ -29,19 +30,15 @@ export interface HeaderStyleProps {
   hasYOffset: boolean;
 }
 
-const headerHeight = 70;
-
-const shadowColor = '#ccc';
-
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   header: ({ hasYOffset }: HeaderStyleProps) => ({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
     height: headerHeight,
     boxShadow: hasYOffset
-      ? `0px 3px 6px ${shadowColor}`
-      : `0px 1px 0px ${shadowColor}`,
+      ? `0px 3px 6px ${theme.palette.grey[400]}`
+      : `0px 1px 0px ${theme.palette.grey[400]}`,
     background: 'white',
   }),
   iconButton: {
@@ -50,7 +47,7 @@ const useStyles = makeStyles(() => ({
     borderRadius: 0,
   },
   cartButton: {
-    borderLeft: '1px solid #eee',
+    borderLeft: `1px solid ${theme.palette.grey[200]}`,
   },
   ellipsis: {
     overflow: 'hidden',
@@ -163,7 +160,7 @@ export const Header: React.FC<HeaderProps> = () => {
           top,
           height,
         } = addToCardSectionRef.current.getBoundingClientRect();
-        const isIntersecting = top < 70 - height;
+        const isIntersecting = top < headerHeight - height;
         setIsIntersectingHeader(isIntersecting);
       }
     };

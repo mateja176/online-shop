@@ -5,29 +5,29 @@ import {
   Theme,
   Typography,
   useMediaQuery,
+  useTheme,
 } from '@material-ui/core';
 import { ArrowDropDown, LocalOffer, ZoomIn } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { useItem } from 'hooks';
 import { addToCardSectionId } from 'models/components';
 import React from 'react';
+import {
+  headerHeight,
+  imageGridGap,
+  maxImageSize,
+  thumbnailSize,
+} from 'styles';
 import { formatCurrency } from 'utils';
 
 export interface OverviewProps {}
-
-const shadowColor = '#eee';
-
-const boxShadow: React.CSSProperties['boxShadow'] = `1px 1px ${shadowColor}, -1px -1px ${shadowColor}`;
 
 const imagePreviewStyle: React.CSSProperties = {
   cursor: 'pointer',
 };
 
-const imageSize = 600;
-
+/* value is multiplied to get absolute amount in pixels */
 const margin = 8;
-
-const thumbnailSize = 186;
 
 export const Overview: React.FC<OverviewProps> = () => {
   const item = useItem();
@@ -41,16 +41,25 @@ export const Overview: React.FC<OverviewProps> = () => {
 
   const formatEUR = formatCurrency(item?.article.currency ?? '');
 
+  const theme = useTheme();
+
+  const boxShadow: React.CSSProperties['boxShadow'] = `1px 1px ${theme.palette.grey[200]}, -1px -1px ${theme.palette.grey[200]}`;
+
   const isSmallOrLower = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm'),
   );
 
-  const previewImageSize = isSmallOrLower ? imageSize : thumbnailSize;
+  const previewImageSize = isSmallOrLower ? maxImageSize : thumbnailSize;
 
   return (
-    <Box mt="70px" mb={margin} display="flex" flexWrap="wrap">
+    <Box mt={`${headerHeight}px`} mb={margin} display="flex" flexWrap="wrap">
       <Box mt={margin} display="flex" flexWrap="wrap">
-        <Box display="grid" gridGap={21} mr="21px" ml={5}>
+        <Box
+          display="grid"
+          gridGap={imageGridGap}
+          mr={`${imageGridGap}px`}
+          ml={5}
+        >
           {item?.article.images.map((src) => (
             <Box
               key={src}
@@ -70,8 +79,8 @@ export const Overview: React.FC<OverviewProps> = () => {
           ))}
         </Box>
         <Box
-          width={imageSize}
-          height={imageSize}
+          width={maxImageSize}
+          height={maxImageSize}
           boxShadow={boxShadow}
           position="relative"
           display={isSmallOrLower ? 'none' : 'flex'}

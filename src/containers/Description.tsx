@@ -12,22 +12,28 @@ import {
   TableCell,
   TableRow,
   Typography,
+  useTheme,
 } from '@material-ui/core';
 import { Attachment } from '@material-ui/icons';
 import { useItem } from 'hooks';
 import React from 'react';
+import { imageSize, maxImageSize } from 'styles';
 import { formatCurrency } from 'utils';
 
 export interface DescriptionProps {}
+
+const cardWidth = maxImageSize + imageSize;
+
+const cardGridGap = 40;
+
+const cardCount = 2;
+
+const descriptionWidth = cardWidth * cardCount + cardGridGap;
 
 const headerStyle: React.CSSProperties = {
   textTransform: 'uppercase',
   fontWeight: 'bold',
 };
-
-const cardWidth = 800;
-
-const descriptionWidth = cardWidth * 2 + 40;
 
 const bulletStyle: React.CSSProperties = {
   transform: 'scale(2)',
@@ -66,8 +72,10 @@ const cardContentStyle: React.CSSProperties = {
 export const Description: React.FC<DescriptionProps> = () => {
   const item = useItem();
 
+  const theme = useTheme();
+
   return (
-    <Box bgcolor="#eee" py={8}>
+    <Box bgcolor={theme.palette.grey[200]} py={8}>
       <Box maxWidth={descriptionWidth} mx={5}>
         <Typography variant="h6" color="secondary" style={headerStyle}>
           Description
@@ -79,7 +87,7 @@ export const Description: React.FC<DescriptionProps> = () => {
         display="grid"
         maxWidth={descriptionWidth}
         gridTemplateColumns="repeat(auto-fit, minmax(300px, auto))"
-        gridGap={40}
+        gridGap={cardGridGap}
       >
         <Box mt={5}>
           <Card style={cardStyle}>
