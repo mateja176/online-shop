@@ -6,6 +6,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  makeStyles,
 } from '@material-ui/core';
 import { ArrowDropDown, LocalOffer, ZoomIn } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
@@ -22,12 +23,14 @@ import { formatCurrency } from 'utils';
 
 export interface OverviewProps {}
 
-const imagePreviewStyle: React.CSSProperties = {
-  cursor: 'pointer',
-};
-
 /* value is multiplied to get absolute amount in pixels */
 const margin = 8;
+
+const useStyles = makeStyles((theme) => ({
+  imagePreview: {
+    cursor: 'pointer',
+  },
+}));
 
 export const Overview: React.FC<OverviewProps> = () => {
   const item = useItem();
@@ -40,6 +43,8 @@ export const Overview: React.FC<OverviewProps> = () => {
   }, [selectedImage, item]);
 
   const formatEUR = formatCurrency(item?.article.currency ?? '');
+
+  const classes = useStyles();
 
   const theme = useTheme();
 
@@ -63,6 +68,7 @@ export const Overview: React.FC<OverviewProps> = () => {
           {item?.article.images.map((src) => (
             <Box
               key={src}
+              className={classes.imagePreview}
               maxWidth={previewImageSize}
               maxHeight={previewImageSize}
               boxShadow={boxShadow}
@@ -72,7 +78,6 @@ export const Overview: React.FC<OverviewProps> = () => {
               onClick={() => {
                 setSelectedImage(src);
               }}
-              style={imagePreviewStyle}
             >
               <img src={src} alt="Article" width="100%" height="100%" />
             </Box>

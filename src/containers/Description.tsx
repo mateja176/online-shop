@@ -13,6 +13,7 @@ import {
   TableRow,
   Typography,
   useTheme,
+  makeStyles,
 } from '@material-ui/core';
 import { Attachment } from '@material-ui/icons';
 import { useItem } from 'hooks';
@@ -30,54 +31,58 @@ const cardCount = 2;
 
 const descriptionWidth = cardWidth * cardCount + cardGridGap;
 
-const headerStyle: React.CSSProperties = {
-  textTransform: 'uppercase',
-  fontWeight: 'bold',
-};
+const useStyles = makeStyles(() => ({
+  header: {
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+  },
 
-const bulletStyle: React.CSSProperties = {
-  transform: 'scale(2)',
-  marginRight: 15,
-};
+  bullet: {
+    transform: 'scale(2)',
+    marginRight: 15,
+  },
 
-const attachmentIconsStyle: React.CSSProperties = {
-  transform: 'rotate(-45deg) scaleX(-1)',
-  marginRight: 5,
-};
+  attachmentIcons: {
+    transform: 'rotate(-45deg) scaleX(-1)',
+    marginRight: 5,
+  },
 
-const keywordStyle: React.CSSProperties = {
-  color: 'white',
-  background: '#ccc',
-  fontWeight: 'bold',
-  textTransform: 'uppercase',
-  marginRight: 10,
-};
+  keyword: {
+    color: 'white',
+    background: '#ccc',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    marginRight: 10,
+  },
 
-const cardStyle: React.CSSProperties = {
-  height: '100%',
-};
+  card: {
+    height: '100%',
+  },
 
-const priceBreakTableBodyStyle: React.CSSProperties = {
-  display: 'inline-block',
-  marginTop: 5,
-  borderTop: '1px solid #eee',
-};
+  priceBreakTableBody: {
+    display: 'inline-block',
+    marginTop: 5,
+    borderTop: '1px solid #eee',
+  },
 
-const cardContentStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-};
+  cardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  },
+}));
 
 export const Description: React.FC<DescriptionProps> = () => {
   const item = useItem();
+
+  const classes = useStyles();
 
   const theme = useTheme();
 
   return (
     <Box bgcolor={theme.palette.grey[200]} py={8}>
       <Box maxWidth={descriptionWidth} mx={5}>
-        <Typography variant="h6" color="secondary" style={headerStyle}>
+        <Typography variant="h6" color="secondary" className={classes.header}>
           Description
         </Typography>
         <Typography>{item?.article.description_long}</Typography>
@@ -90,10 +95,10 @@ export const Description: React.FC<DescriptionProps> = () => {
         gridGap={cardGridGap}
       >
         <Box mt={5}>
-          <Card style={cardStyle}>
+          <Card className={classes.card}>
             <CardContent>
               <Box m={2}>
-                <Typography color="secondary" style={headerStyle}>
+                <Typography color="secondary" className={classes.header}>
                   Details
                 </Typography>
               </Box>
@@ -107,7 +112,7 @@ export const Description: React.FC<DescriptionProps> = () => {
                     Object.entries(item?.article.features).map(
                       ([name, feature]) => (
                         <ListItem key={name}>
-                          <Typography style={bulletStyle}>•</Typography>
+                          <Typography className={classes.bullet}>•</Typography>
                           <Typography color="textSecondary">
                             {name}
                           </Typography>: {feature}
@@ -123,7 +128,7 @@ export const Description: React.FC<DescriptionProps> = () => {
                 <List>
                   {item?.article.attachments.map(({ file_label }) => (
                     <ListItem key={file_label}>
-                      <Attachment style={attachmentIconsStyle} />
+                      <Attachment className={classes.attachmentIcons} />
                       <Link color="primary">{file_label}</Link>
                     </ListItem>
                   ))}
@@ -135,7 +140,11 @@ export const Description: React.FC<DescriptionProps> = () => {
                 </Typography>
                 <Box display="flex" pt={1}>
                   {item?.article.keywords.map((keyword) => (
-                    <Chip key={keyword} label={keyword} style={keywordStyle} />
+                    <Chip
+                      key={keyword}
+                      label={keyword}
+                      className={classes.keyword}
+                    />
                   ))}
                 </Box>
               </Box>
@@ -143,10 +152,10 @@ export const Description: React.FC<DescriptionProps> = () => {
           </Card>
         </Box>
         <Box mt={5}>
-          <Card style={cardStyle}>
-            <CardContent style={cardContentStyle}>
+          <Card className={classes.card}>
+            <CardContent className={classes.cardContent}>
               <Box m={2}>
-                <Typography color="secondary" style={headerStyle}>
+                <Typography color="secondary" className={classes.header}>
                   Pricing & shipping
                 </Typography>
               </Box>
@@ -160,7 +169,7 @@ export const Description: React.FC<DescriptionProps> = () => {
                 <Box mt={3}>
                   <List>
                     <ListItem>
-                      <Typography style={bulletStyle}>•</Typography>
+                      <Typography className={classes.bullet}>•</Typography>
                       <Typography color="textSecondary">
                         Minimum order:
                       </Typography>
@@ -168,7 +177,7 @@ export const Description: React.FC<DescriptionProps> = () => {
                       {item?.article.minimum_order_quantity}
                     </ListItem>
                     <ListItem>
-                      <Typography style={bulletStyle}>•</Typography>
+                      <Typography className={classes.bullet}>•</Typography>
                       <Typography color="textSecondary">Shipping:</Typography>
                       &nbsp;
                       {item?.article.currency &&
@@ -177,7 +186,7 @@ export const Description: React.FC<DescriptionProps> = () => {
                         )}
                     </ListItem>
                     <ListItem>
-                      <Typography style={bulletStyle}>•</Typography>
+                      <Typography className={classes.bullet}>•</Typography>
                       <Typography color="textSecondary">Delivery:</Typography>
                       &nbsp;
                       {item?.article.delivery_time}
@@ -189,7 +198,7 @@ export const Description: React.FC<DescriptionProps> = () => {
                     Price breaks
                   </Typography>
                   <Table>
-                    <TableBody style={priceBreakTableBodyStyle}>
+                    <TableBody className={classes.priceBreakTableBody}>
                       {item?.article.price_breaks &&
                         Object.entries(item?.article.price_breaks).map(
                           ([pieces, price]) => (
