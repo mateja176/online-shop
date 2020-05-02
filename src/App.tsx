@@ -4,7 +4,13 @@ import React from 'react';
 import { hot } from 'react-hot-loader';
 
 function App() {
-  const theme = createMuiTheme();
+  const theme = createMuiTheme({
+    palette: {
+      secondary: {
+        main: 'rgb(230, 80, 70)',
+      },
+    },
+  });
   return (
     <ThemeProvider theme={theme}>
       <Header />
