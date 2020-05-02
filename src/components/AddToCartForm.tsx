@@ -5,7 +5,6 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { AddShoppingCart } from '@material-ui/icons';
 import React from 'react';
 
 export interface AddToCartFormProps {
@@ -36,7 +35,7 @@ export const AddToCartForm: React.FC<AddToCartFormProps> = ({
   submitButton = (
     <Button
       type="submit"
-      startIcon={<AddShoppingCart />}
+      startIcon={<i className="app-icon icon-cart-in">&#xe809;</i>}
       color="secondary"
       variant="contained"
       disabled={!numberOfItems}

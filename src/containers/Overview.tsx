@@ -2,13 +2,13 @@ import {
   Box,
   IconButton,
   Link,
+  makeStyles,
   Theme,
   Typography,
   useMediaQuery,
   useTheme,
-  makeStyles,
 } from '@material-ui/core';
-import { ArrowDropDown, LocalOffer, ZoomIn, ZoomOut } from '@material-ui/icons';
+import { ArrowDropDown } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import { useItem } from 'hooks';
 import { addToCardSectionId } from 'models/components';
@@ -121,10 +121,10 @@ export const Overview: React.FC<OverviewProps> = () => {
           )}
           <Box position="absolute" right={3} bottom={3}>
             <IconButton onClick={zoomOut}>
-              <ZoomOut />
+              <i className="app-icon icon-zoom-out">&#xe802;</i>
             </IconButton>
             <IconButton onClick={zoomIn}>
-              <ZoomIn />
+              <i className="app-icon icon-zoom-in">&#xe803;</i>
             </IconButton>
           </Box>
         </Box>
@@ -160,8 +160,8 @@ export const Overview: React.FC<OverviewProps> = () => {
             <Typography color="textSecondary">
               + {formatEUR(item?.article.transport_costs)} shipping{' '}
             </Typography>
-            <Box ml={2}>
-              <LocalOffer />
+            <Box ml={1} fontSize={20}>
+              <i className="app-icon discount">&#xe80b;</i>
             </Box>
           </Box>
           <Typography color="textSecondary">

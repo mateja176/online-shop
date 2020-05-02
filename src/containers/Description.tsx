@@ -15,7 +15,7 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core';
-import { Attachment } from '@material-ui/icons';
+import clsx from 'clsx';
 import { useItem } from 'hooks';
 import React from 'react';
 import { imageSize, maxImageSize } from 'styles';
@@ -42,9 +42,8 @@ const useStyles = makeStyles(() => ({
     marginRight: 15,
   },
 
-  attachmentIcons: {
-    transform: 'rotate(-45deg) scaleX(-1)',
-    marginRight: 5,
+  attachmentIcon: {
+    marginRight: 10,
   },
 
   keyword: {
@@ -129,7 +128,15 @@ export const Description: React.FC<DescriptionProps> = () => {
                   {item?.article.attachments.map(
                     ({ file_label, file_link }) => (
                       <ListItem key={file_label}>
-                        <Attachment className={classes.attachmentIcons} />
+                        <i
+                          className={clsx(
+                            'app-icon',
+                            'icon-attachment',
+                            classes.attachmentIcon,
+                          )}
+                        >
+                          &#xe806;
+                        </i>
                         <Link href={file_link} color="primary" target="__blank">
                           {file_label}
                         </Link>

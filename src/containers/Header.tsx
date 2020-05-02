@@ -9,13 +9,6 @@ import {
   Typography,
   useMediaQuery,
 } from '@material-ui/core';
-import {
-  AddShoppingCart,
-  Favorite,
-  FavoriteBorder,
-  InsertDriveFile,
-  ShoppingCart,
-} from '@material-ui/icons';
 import clsx from 'clsx';
 import {
   AddToCartForm,
@@ -75,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
   form: {
     display: 'flex',
     alignItems: 'center',
+  },
+  heart: {
+    color: theme.palette.secondary.main,
   },
 }));
 
@@ -238,7 +234,7 @@ export const Header: React.FC<HeaderProps> = () => {
                 disabled={!numberOfItems}
                 color="secondary"
               >
-                <AddShoppingCart />
+                <i className="app-icon icon-cart-in">&#xe809;</i>
               </IconButton>
             ) : undefined
           }
@@ -251,10 +247,16 @@ export const Header: React.FC<HeaderProps> = () => {
           addToCardSectionRef.current,
         )}
       <IconButton className={classes.iconButton} onClick={toggleIsFavorite}>
-        {isFavorite ? <Favorite color="secondary" /> : <FavoriteBorder />}
+        {isFavorite ? (
+          <i className={clsx('app-icon', 'icon-heart', classes.heart)}>
+            &#xe800;
+          </i>
+        ) : (
+          <i className="app-icon icon-heart-empty">&#xe801;</i>
+        )}
       </IconButton>
       <IconButton className={classes.iconButton}>
-        <InsertDriveFile />
+        <i className="app-icon icon-compare">&#xe80a;</i>
       </IconButton>
       <Tooltip title={itemCount > maxItemCount ? itemCount.toString() : ''}>
         <IconButton className={clsx(classes.iconButton, classes.cartButton)}>
@@ -264,7 +266,7 @@ export const Header: React.FC<HeaderProps> = () => {
             color="secondary"
             max={maxItemCount}
           >
-            <ShoppingCart />
+            <i className="app-icon icon-cart">&#xe804;</i>
           </Badge>
         </IconButton>
       </Tooltip>
