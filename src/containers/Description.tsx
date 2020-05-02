@@ -7,13 +7,13 @@ import {
   Link,
   List,
   ListItem,
+  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableRow,
   Typography,
   useTheme,
-  makeStyles,
 } from '@material-ui/core';
 import { Attachment } from '@material-ui/icons';
 import { useItem } from 'hooks';
@@ -126,12 +126,16 @@ export const Description: React.FC<DescriptionProps> = () => {
                   Attachments
                 </Typography>
                 <List>
-                  {item?.article.attachments.map(({ file_label }) => (
-                    <ListItem key={file_label}>
-                      <Attachment className={classes.attachmentIcons} />
-                      <Link color="primary">{file_label}</Link>
-                    </ListItem>
-                  ))}
+                  {item?.article.attachments.map(
+                    ({ file_label, file_link }) => (
+                      <ListItem key={file_label}>
+                        <Attachment className={classes.attachmentIcons} />
+                        <Link href={file_link} color="primary" target="__blank">
+                          {file_label}
+                        </Link>
+                      </ListItem>
+                    ),
+                  )}
                 </List>
               </Box>
               <Box mt={3}>

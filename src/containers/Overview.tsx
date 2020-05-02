@@ -112,7 +112,11 @@ export const Overview: React.FC<OverviewProps> = () => {
           <Box display="flex" mb={2}>
             <Typography color="textSecondary">by</Typography>&nbsp;
             {item?.article.supplier_name && (
-              <Link color="primary" href={item?.article.supplier_link}>
+              <Link
+                color="primary"
+                href={item?.article.supplier_link}
+                target="__blank"
+              >
                 {item?.article.supplier_name}
               </Link>
             )}
