@@ -10,6 +10,7 @@ import {
   useMediaQuery,
 } from '@material-ui/core';
 import {
+  AddShoppingCart,
   Favorite,
   FavoriteBorder,
   InsertDriveFile,
@@ -73,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     display: 'flex',
+    alignItems: 'center',
   },
 }));
 
@@ -229,7 +231,17 @@ export const Header: React.FC<HeaderProps> = () => {
       >
         <AddToCartForm
           {...addToCartFormProps}
-          buttonText={isSmallOrLower ? '' : undefined}
+          submitButton={
+            isSmallOrLower ? (
+              <IconButton
+                type="submit"
+                disabled={!numberOfItems}
+                color="secondary"
+              >
+                <AddShoppingCart />
+              </IconButton>
+            ) : undefined
+          }
         />
       </Box>
       {addToCardSectionRef.current &&

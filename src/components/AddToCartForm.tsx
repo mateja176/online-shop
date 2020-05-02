@@ -18,7 +18,7 @@ export interface AddToCartFormProps {
   formLabelClass: string;
   labelClass: string;
   inputClass: string;
-  buttonText?: string;
+  submitButton?: React.ReactNode;
 }
 
 export const initialNumberOfItems = 1;
@@ -33,7 +33,17 @@ export const AddToCartForm: React.FC<AddToCartFormProps> = ({
   formLabelClass,
   labelClass,
   inputClass,
-  buttonText = 'Add to cart',
+  submitButton = (
+    <Button
+      type="submit"
+      startIcon={<AddShoppingCart />}
+      color="secondary"
+      variant="contained"
+      disabled={!numberOfItems}
+    >
+      Add to cart
+    </Button>
+  ),
 }) => (
   <form onSubmit={handleSubmit} className={className}>
     <Box mr={isSmallOrLower ? 2 : 4}>
@@ -53,14 +63,6 @@ export const AddToCartForm: React.FC<AddToCartFormProps> = ({
         {!isSmallOrLower && <Typography className={labelClass}>PCE</Typography>}
       </FormLabel>
     </Box>
-    <Button
-      type="submit"
-      startIcon={<AddShoppingCart />}
-      color="secondary"
-      variant="contained"
-      disabled={!numberOfItems}
-    >
-      {buttonText}
-    </Button>
+    {submitButton}
   </form>
 );
