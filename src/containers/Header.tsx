@@ -5,9 +5,9 @@ import {
   IconButton,
   makeStyles,
   Theme,
+  Tooltip,
   Typography,
   useMediaQuery,
-  Tooltip,
 } from '@material-ui/core';
 import {
   Favorite,
@@ -16,7 +16,11 @@ import {
   ShoppingCart,
 } from '@material-ui/icons';
 import clsx from 'clsx';
-import { AddToCartForm, AddToCartFormProps } from 'components';
+import {
+  AddToCartForm,
+  AddToCartFormProps,
+  initialNumberOfItems,
+} from 'components';
 import { useItem } from 'hooks';
 import { addToCardSectionId } from 'models/components';
 import React from 'react';
@@ -24,9 +28,6 @@ import { createPortal } from 'react-dom';
 import { headerHeight } from 'styles';
 
 export interface HeaderProps {}
-
-
-const initialNumberOfItems = 1;
 
 const maxItemCount = 999;
 
@@ -205,7 +206,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
   return (
     <AppBar position="fixed" className={classes.header}>
-      <Tooltip title={item?.article.title || ''}>
+      <Tooltip title={item?.article.title || ''} placement="bottom-start">
         <Box
           flex={1}
           ml={4}
@@ -244,7 +245,12 @@ export const Header: React.FC<HeaderProps> = () => {
       </IconButton>
       <Tooltip title={itemCount > maxItemCount ? itemCount.toString() : ''}>
         <IconButton className={clsx(classes.iconButton, classes.cartButton)}>
-          <Badge ref={countBadgeRef} badgeContent={itemCount} color="secondary" max={maxItemCount}>
+          <Badge
+            ref={countBadgeRef}
+            badgeContent={itemCount}
+            color="secondary"
+            max={maxItemCount}
+          >
             <ShoppingCart />
           </Badge>
         </IconButton>

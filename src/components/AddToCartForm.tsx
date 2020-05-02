@@ -21,6 +21,8 @@ export interface AddToCartFormProps {
   buttonText?: string;
 }
 
+export const initialNumberOfItems = 1;
+
 export const AddToCartForm: React.FC<AddToCartFormProps> = ({
   numberOfItems,
   isSmallOrLower,
@@ -37,6 +39,7 @@ export const AddToCartForm: React.FC<AddToCartFormProps> = ({
     <Box mr={isSmallOrLower ? 2 : 4}>
       <FormLabel className={formLabelClass}>
         <TextField
+          placeholder={initialNumberOfItems.toString()}
           type="number"
           variant="outlined"
           size="small"
@@ -55,7 +58,7 @@ export const AddToCartForm: React.FC<AddToCartFormProps> = ({
       startIcon={<AddShoppingCart />}
       color="secondary"
       variant="contained"
-      disabled={numberOfItems === 0}
+      disabled={!numberOfItems}
     >
       {buttonText}
     </Button>
