@@ -22,7 +22,6 @@ import { useItem } from 'hooks';
 import { addToCardSectionId } from 'models/components';
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { Transition } from 'react-transition-group';
 
 export interface HeaderProps {}
 
@@ -146,12 +145,12 @@ export const Header: React.FC<HeaderProps> = () => {
     addToCardSectionRef.current = section;
   }, []);
 
-  const isMediumOrHigher = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.up('md'),
-  );
-
   const isSmallOrLower = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm'),
+  );
+
+  const isExtraSmallOrLower = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('xs'),
   );
 
   const [isIntersectingHeader, setIsIntersectingHeader] = React.useState(false);
@@ -175,6 +174,15 @@ export const Header: React.FC<HeaderProps> = () => {
       window.removeEventListener(eventType, handleScroll);
     };
   }, []);
+
+  const getSectionStyle = (isShown: boolean): React.CSSProperties => ({
+    width: isShown ? 'auto' : 0,
+    overflow: 'hidden',
+    transition: 'opacity 300ms',
+    opacity: isShown ? 1 : 0,
+  });
+
+  const showTitle = !isExtraSmallOrLower || !isIntersectingHeader;
 
   const AddToCartForm: React.FC<{ buttonText: string }> = ({ buttonText }) => (
     <form onSubmit={handleSubmit} className={classes.form}>
@@ -210,33 +218,27 @@ export const Header: React.FC<HeaderProps> = () => {
 
   return (
     <AppBar position="fixed" className={classes.header}>
-      {isMediumOrHigher && (
-        <Box flex={1} ml={4} minWidth="34%">
-          <Typography
-            variant="h5"
-            color="secondary"
-            className={classes.ellipsis}
-            title={item?.article.title}
-          >
-            {item?.article.title}
-          </Typography>
-        </Box>
-      )}
-      <Box ml="auto" mr={isSmallOrLower ? 1 : 4}>
-        <Transition in={isIntersectingHeader} timeout={300} unmountOnExit>
-          {(state) => (
-            <Box
-              style={{
-                transition: 'opacity 300ms',
-                opacity: state === 'exiting' || state === 'entering' ? 0 : 1,
-              }}
-            >
-              <AddToCartForm
-                buttonText={isSmallOrLower ? '' : addToCartButtonText}
-              />
-            </Box>
-          )}
-        </Transition>
+      <Box
+        flex={1}
+        ml={4}
+        minWidth={showTitle ? '34%' : 0}
+        style={getSectionStyle(showTitle)}
+      >
+        <Typography
+          variant="h5"
+          color="secondary"
+          className={classes.ellipsis}
+          title={item?.article.title}
+        >
+          {item?.article.title}
+        </Typography>
+      </Box>
+      <Box
+        ml="auto"
+        mr={isSmallOrLower ? 1 : 4}
+        style={getSectionStyle(isIntersectingHeader)}
+      >
+        <AddToCartForm buttonText={isSmallOrLower ? '' : addToCartButtonText} />
       </Box>
       {addToCardSectionRef.current &&
         createPortal(
