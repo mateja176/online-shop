@@ -2,15 +2,11 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import { Description, Header, Overview } from 'containers';
 import React from 'react';
 import { hot } from 'react-hot-loader';
+import { themeOptions } from 'styles';
+
+const theme = createMuiTheme(themeOptions);
 
 function App() {
-  const theme = createMuiTheme({
-    palette: {
-      secondary: {
-        main: 'rgb(230, 80, 70)',
-      },
-    },
-  });
   return (
     <ThemeProvider theme={theme}>
       <Header />
